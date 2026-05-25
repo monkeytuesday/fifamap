@@ -152,25 +152,237 @@
     letter-spacing: 1.2px;
     margin-bottom: 2px;
   }
+
+  /* ===== Country Detail Modal ===== */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 9, 20, 0.78);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-backdrop.open { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal {
+    background: linear-gradient(160deg, #111a2e 0%, #18243f 100%);
+    color: var(--text);
+    border: 1px solid #2a3a63;
+    border-radius: 14px;
+    max-width: 720px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #2a3a63;
+    background: rgba(11, 18, 32, 0.7);
+    color: var(--text);
+    font-size: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    z-index: 1;
+  }
+  .modal-close:hover {
+    background: var(--accent);
+    color: #0b1220;
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+
+  .modal-flag-wrap {
+    background: #0b1220;
+    padding: 24px;
+    border-radius: 14px 14px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #2a3a63;
+  }
+  .modal-flag-wrap img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border: 2px solid #fff;
+  }
+
+  .modal-body { padding: 24px 28px 28px; }
+
+  .modal-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .modal-title-row h2 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: -0.3px;
+  }
+  .modal-fifa-code {
+    background: var(--accent);
+    color: #0b1220;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 800;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    letter-spacing: 1px;
+  }
+
+  .modal-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .stat-card {
+    background: rgba(11, 18, 32, 0.6);
+    border: 1px solid #2a3a63;
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .stat-card .stat-label {
+    display: block;
+    font-size: 10px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-value {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .modal-section-title {
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+    margin: 0 0 10px;
+  }
+
+  .fun-facts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: fact-counter;
+  }
+  .fun-facts li {
+    counter-increment: fact-counter;
+    position: relative;
+    padding: 10px 12px 10px 44px;
+    margin-bottom: 8px;
+    background: rgba(11, 18, 32, 0.5);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #d4dcf2;
+  }
+  .fun-facts li::before {
+    content: counter(fact-counter);
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    color: #0b1220;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 12px;
+  }
+
+  @media (max-width: 520px) {
+    .modal-stats { grid-template-columns: 1fr; }
+    .modal-title-row h2 { font-size: 22px; }
+    .modal-body { padding: 20px; }
+  }
 </style>
 </head>
 <body>
 
 <header>
   <h1>FIFA World Cup 2026 — All 48 Qualified Nations</h1>
-  <p>Hover over any flag to see the country name. 3-letter FIFA codes are shown below each flag.</p>
+  <p>Hover over any flag to see the country name. Click a flag for details, fun facts, and a high-resolution view.</p>
 </header>
 
 <div id="map"></div>
 
 <div class="info-badge">
   <strong>48 teams</strong> · USA · Canada · Mexico host the first 48-nation World Cup.
-  Hover any flag marker to reveal the country's name.
+  Hover any flag marker to reveal the country's name — click it for more!
 </div>
 
 <div class="credit-legend">
   <span class="credit-label">Created by</span>
-  the Marcos Aycinena sisters (and Dad!)
+  the Marcos Aycinena sisters
+</div>
+
+<!-- Country detail modal -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <div class="modal-flag-wrap">
+      <img id="modalFlag" src="" alt="" />
+    </div>
+    <div class="modal-body">
+      <div class="modal-title-row">
+        <h2 id="modalTitle"></h2>
+        <span class="modal-fifa-code" id="modalCode"></span>
+      </div>
+      <div class="modal-stats">
+        <div class="stat-card">
+          <span class="stat-label">Official Language</span>
+          <div class="stat-value" id="modalLanguage"></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Population</span>
+          <div class="stat-value" id="modalPopulation"></div>
+        </div>
+      </div>
+      <p class="modal-section-title">5 Fun Facts</p>
+      <ol class="fun-facts" id="modalFacts"></ol>
+    </div>
+  </div>
 </div>
 
 <!-- Leaflet JS -->
@@ -181,60 +393,548 @@
 </script>
 
 <script>
-  // All 48 qualified teams for the 2026 FIFA World Cup
-  // [country name, FIFA 3-letter code, ISO/flagcdn slug, latitude, longitude]
+  // ============================================================
+  // 48 qualified nations for the 2026 FIFA World Cup
+  // Embedded inline so the page works from file:// or any host
+  // (kept in sync with countries-data.json — that file is the
+  // canonical reference for content edits)
+  // ============================================================
   const teams = [
-    ["Algeria",                "ALG", "dz",     28.0339,    1.6596],
-    ["Argentina",              "ARG", "ar",    -38.4161,  -63.6167],
-    ["Australia",              "AUS", "au",    -25.2744,  133.7751],
-    ["Austria",                "AUT", "at",     47.5162,   14.5501],
-    ["Belgium",                "BEL", "be",     50.5039,    4.4699],
-    ["Bosnia and Herzegovina", "BIH", "ba",     43.9159,   17.6791],
-    ["Brazil",                 "BRA", "br",    -14.2350,  -51.9253],
-    ["Canada",                 "CAN", "ca",     56.1304, -106.3468],
-    ["Cape Verde",             "CPV", "cv",     16.5388,  -23.0418],
-    ["Colombia",               "COL", "co",      4.5709,  -74.2973],
-    ["Croatia",                "CRO", "hr",     45.1000,   15.2000],
-    ["Curaçao",                "CUW", "cw",     12.1696,  -68.9900],
-    ["Czechia",                "CZE", "cz",     49.8175,   15.4730],
-    ["DR Congo",               "COD", "cd",     -4.0383,   21.7587],
-    ["Ecuador",                "ECU", "ec",     -1.8312,  -78.1834],
-    ["Egypt",                  "EGY", "eg",     26.8206,   30.8025],
-    ["England",                "ENG", "gb-eng", 52.3555,   -1.1743],
-    ["France",                 "FRA", "fr",     46.2276,    2.2137],
-    ["Germany",                "GER", "de",     51.1657,   10.4515],
-    ["Ghana",                  "GHA", "gh",      7.9465,   -1.0232],
-    ["Haiti",                  "HAI", "ht",     18.9712,  -72.2852],
-    ["Iran",                   "IRN", "ir",     32.4279,   53.6880],
-    ["Iraq",                   "IRQ", "iq",     33.2232,   43.6793],
-    ["Ivory Coast",            "CIV", "ci",      7.5400,   -5.5471],
-    ["Japan",                  "JPN", "jp",     36.2048,  138.2529],
-    ["Jordan",                 "JOR", "jo",     30.5852,   36.2384],
-    ["Mexico",                 "MEX", "mx",     23.6345, -102.5528],
-    ["Morocco",                "MAR", "ma",     31.7917,   -7.0926],
-    ["Netherlands",            "NED", "nl",     52.1326,    5.2913],
-    ["New Zealand",            "NZL", "nz",    -40.9006,  174.8860],
-    ["Norway",                 "NOR", "no",     60.4720,    8.4689],
-    ["Panama",                 "PAN", "pa",      8.5380,  -80.7821],
-    ["Paraguay",               "PAR", "py",    -23.4425,  -58.4438],
-    ["Portugal",               "POR", "pt",     39.3999,   -8.2245],
-    ["Qatar",                  "QAT", "qa",     25.3548,   51.1839],
-    ["Saudi Arabia",           "KSA", "sa",     23.8859,   45.0792],
-    ["Scotland",               "SCO", "gb-sct", 56.4907,   -4.2026],
-    ["Senegal",                "SEN", "sn",     14.4974,  -14.4524],
-    ["South Africa",           "RSA", "za",    -30.5595,   22.9375],
-    ["South Korea",            "KOR", "kr",     35.9078,  127.7669],
-    ["Spain",                  "ESP", "es",     40.4637,   -3.7492],
-    ["Sweden",                 "SWE", "se",     60.1282,   18.6435],
-    ["Switzerland",            "SUI", "ch",     46.8182,    8.2275],
-    ["Tunisia",                "TUN", "tn",     33.8869,    9.5375],
-    ["Turkey",                 "TUR", "tr",     38.9637,   35.2433],
-    ["Uruguay",                "URU", "uy",    -32.5228,  -55.7658],
-    ["USA",                    "USA", "us",     37.0902,  -95.7129],
-    ["Uzbekistan",             "UZB", "uz",     41.3775,   64.5853]
+    {
+      name: "Algeria", fifa: "ALG", iso: "dz", lat: 28.0339, lng: 1.6596,
+      language: "Arabic, Berber (Tamazight)", population: "46 million",
+      fun_facts: [
+        "Largest country in all of Africa by land area.",
+        "The Sahara Desert covers more than 80% of the country.",
+        "Couscous is the national dish and a UNESCO cultural treasure.",
+        "Home to ancient Roman ruins like Timgad and Djémila.",
+        "Won the Africa Cup of Nations football tournament in 2019."
+      ]
+    },
+    {
+      name: "Argentina", fifa: "ARG", iso: "ar", lat: -38.4161, lng: -63.6167,
+      language: "Spanish", population: "46 million",
+      fun_facts: [
+        "Avenida 9 de Julio in Buenos Aires is the widest avenue in the world.",
+        "The tango dance was invented here in the 1880s.",
+        "Lionel Messi, one of the greatest footballers ever, was born in Rosario.",
+        "Has both glaciers in the south and tropical jungles in the north.",
+        "Mount Aconcagua is the tallest peak in the Americas at 22,841 feet."
+      ]
+    },
+    {
+      name: "Australia", fifa: "AUS", iso: "au", lat: -25.2744, lng: 133.7751,
+      language: "English", population: "27 million",
+      fun_facts: [
+        "It's both a country and an entire continent at the same time.",
+        "Home to unique animals found nowhere else: kangaroos, koalas, and platypuses.",
+        "The Great Barrier Reef is the world's largest coral reef — visible from space.",
+        "There are around 3 sheep for every person who lives here.",
+        "The Sydney Opera House roof is covered in over one million tiles."
+      ]
+    },
+    {
+      name: "Austria", fifa: "AUT", iso: "at", lat: 47.5162, lng: 14.5501,
+      language: "German", population: "9 million",
+      fun_facts: [
+        "Birthplace of the composer Wolfgang Amadeus Mozart.",
+        "'The Sound of Music' was filmed in the city of Salzburg.",
+        "Vienna is regularly voted the most livable city in the world.",
+        "The snowy Alps cover almost two-thirds of the country.",
+        "Croissants were first invented in Vienna, not in France!"
+      ]
+    },
+    {
+      name: "Belgium", fifa: "BEL", iso: "be", lat: 50.5039, lng: 4.4699,
+      language: "Dutch, French, German", population: "12 million",
+      fun_facts: [
+        "Famous for chocolate, waffles, and French fries (which were actually invented here).",
+        "Brussels is the headquarters of the European Union.",
+        "Belgium has more than 1,500 different kinds of beer.",
+        "The comic book hero Tintin was created by a Belgian artist.",
+        "In Brussels there's a tiny famous statue of a boy called Manneken Pis."
+      ]
+    },
+    {
+      name: "Bosnia and Herzegovina", fifa: "BIH", iso: "ba", lat: 43.9159, lng: 17.6791,
+      language: "Bosnian, Croatian, Serbian", population: "3.2 million",
+      fun_facts: [
+        "The outline of the country looks a bit like a triangle or heart shape.",
+        "Brave divers jump off the Old Bridge of Mostar — it's a 500-year-old tradition.",
+        "Sarajevo hosted the Winter Olympic Games in 1984.",
+        "It has 20 mountains over 5,000 feet tall — great for skiing.",
+        "The country has only about 12 miles of coastline on the Adriatic Sea."
+      ]
+    },
+    {
+      name: "Brazil", fifa: "BRA", iso: "br", lat: -14.2350, lng: -51.9253,
+      language: "Portuguese", population: "216 million",
+      fun_facts: [
+        "Home to the Amazon, the world's largest tropical rainforest.",
+        "Has won the FIFA World Cup more times than any other country — five!",
+        "The Carnival in Rio is one of the biggest parties on Earth.",
+        "The Christ the Redeemer statue stands 98 feet tall over Rio de Janeiro.",
+        "More species of monkeys live here than in any other country."
+      ]
+    },
+    {
+      name: "Canada", fifa: "CAN", iso: "ca", lat: 56.1304, lng: -106.3468,
+      language: "English, French", population: "40 million",
+      fun_facts: [
+        "Second largest country in the world by land area.",
+        "Has more lakes than the rest of the world combined.",
+        "Canada keeps a Strategic Maple Syrup Reserve — yes, really.",
+        "Polar bears live in the far north near Hudson Bay.",
+        "Niagara Falls sits right on the border with the United States."
+      ]
+    },
+    {
+      name: "Cape Verde", fifa: "CPV", iso: "cv", lat: 16.5388, lng: -23.0418,
+      language: "Portuguese", population: "590,000",
+      fun_facts: [
+        "Made up of 10 volcanic islands off the west coast of Africa.",
+        "Mount Fogo is an active volcano that still erupts.",
+        "The beaches are warm and sunny all year round.",
+        "A style of soulful music called 'morna' was made famous worldwide by singer Cesária Évora.",
+        "The islands had no people on them until Portuguese sailors arrived in 1456."
+      ]
+    },
+    {
+      name: "Colombia", fifa: "COL", iso: "co", lat: 4.5709, lng: -74.2973,
+      language: "Spanish", population: "52 million",
+      fun_facts: [
+        "Famous worldwide for delicious coffee.",
+        "Produces about 70% of the world's emeralds.",
+        "Pink river dolphins swim in the Amazon rivers here.",
+        "The flag's yellow, blue, and red stand for gold, oceans, and the blood of heroes.",
+        "Has coastlines on both the Caribbean Sea and the Pacific Ocean."
+      ]
+    },
+    {
+      name: "Croatia", fifa: "CRO", iso: "hr", lat: 45.1, lng: 15.2,
+      language: "Croatian", population: "3.9 million",
+      fun_facts: [
+        "The necktie (called a 'cravat') was invented here.",
+        "Many scenes from 'Game of Thrones' were filmed in the city of Dubrovnik.",
+        "Has more than 1,000 islands along its coast.",
+        "Dalmatian dogs (the spotted ones!) originally came from the Dalmatia region.",
+        "Plitvice Lakes National Park has 16 stunning turquoise-blue lakes connected by waterfalls."
+      ]
+    },
+    {
+      name: "Curaçao", fifa: "CUW", iso: "cw", lat: 12.1696, lng: -68.99,
+      language: "Dutch, Papiamentu, English", population: "155,000",
+      fun_facts: [
+        "A small Caribbean island known for super-colorful buildings.",
+        "A bright blue liqueur called 'Blue Curaçao' is named after the island.",
+        "Has its own special language called Papiamentu that mixes Portuguese, Spanish, Dutch, and African words.",
+        "Pink flamingos live here in the salt flats.",
+        "The capital Willemstad is so beautiful it's a UNESCO World Heritage Site."
+      ]
+    },
+    {
+      name: "Czechia", fifa: "CZE", iso: "cz", lat: 49.8175, lng: 15.473,
+      language: "Czech", population: "10.8 million",
+      fun_facts: [
+        "Has over 2,000 castles — more per square mile than anywhere else.",
+        "Prague is nicknamed 'The City of a Hundred Spires.'",
+        "The word 'robot' was invented here in a play in 1920.",
+        "Soft contact lenses were invented by a Czech scientist.",
+        "Czechs drink more beer per person than anyone else on the planet."
+      ]
+    },
+    {
+      name: "DR Congo", fifa: "COD", iso: "cd", lat: -4.0383, lng: 21.7587,
+      language: "French", population: "102 million",
+      fun_facts: [
+        "Home to the second largest rainforest in the world after the Amazon.",
+        "Mountain gorillas live in Virunga, Africa's oldest national park.",
+        "The Congo River is the deepest river on Earth — up to 720 feet deep.",
+        "The shy, rare okapi looks like a cross between a zebra and a giraffe.",
+        "It is the largest French-speaking country in the world by population."
+      ]
+    },
+    {
+      name: "Ecuador", fifa: "ECU", iso: "ec", lat: -1.8312, lng: -78.1834,
+      language: "Spanish", population: "18 million",
+      fun_facts: [
+        "Named after the Equator, the imaginary line that runs right through it.",
+        "The Galápagos Islands gave Charles Darwin ideas for his theory of evolution.",
+        "You can stand with one foot in the Northern Hemisphere and one in the Southern.",
+        "Cotopaxi is one of the tallest active volcanoes in the world.",
+        "Panama hats are actually made in Ecuador — they just got their name in Panama!"
+      ]
+    },
+    {
+      name: "Egypt", fifa: "EGY", iso: "eg", lat: 26.8206, lng: 30.8025,
+      language: "Arabic", population: "111 million",
+      fun_facts: [
+        "Home to the Great Pyramids of Giza, built over 4,500 years ago.",
+        "The Nile is the longest river in the world.",
+        "Ancient Egyptians invented the 365-day calendar.",
+        "Cats were considered sacred and treated like royalty.",
+        "The Sphinx is a giant statue with a lion's body and a person's head."
+      ]
+    },
+    {
+      name: "England", fifa: "ENG", iso: "gb-eng", lat: 52.3555, lng: -1.1743,
+      language: "English", population: "57 million",
+      fun_facts: [
+        "'Big Ben' is actually the name of the giant bell, not the famous clock tower.",
+        "William Shakespeare, the most famous playwright ever, was born here.",
+        "The English Channel separates England from France, only 21 miles wide at one point.",
+        "London has been a city for nearly 2,000 years — since the Romans built it.",
+        "Buckingham Palace, where the King lives, has 775 rooms."
+      ]
+    },
+    {
+      name: "France", fifa: "FRA", iso: "fr", lat: 46.2276, lng: 2.2137,
+      language: "French", population: "68 million",
+      fun_facts: [
+        "The Eiffel Tower grows up to 6 inches taller in summer because heat makes the iron expand.",
+        "The most-visited country in the world by tourists.",
+        "Has more than 1,500 different kinds of cheese.",
+        "The Louvre Museum is home to the famous Mona Lisa painting.",
+        "France gave the Statue of Liberty to the United States as a gift in 1886."
+      ]
+    },
+    {
+      name: "Germany", fifa: "GER", iso: "de", lat: 51.1657, lng: 10.4515,
+      language: "German", population: "84 million",
+      fun_facts: [
+        "Has over 1,500 different kinds of sausages.",
+        "Ulm Minster is the tallest church in the world at 530 feet.",
+        "The Brothers Grimm fairy tales — Cinderella, Hansel & Gretel, Snow White — come from here.",
+        "Has more zoos than any other country.",
+        "The Berlin Wall, which divided the country, came down in 1989."
+      ]
+    },
+    {
+      name: "Ghana", fifa: "GHA", iso: "gh", lat: 7.9465, lng: -1.0232,
+      language: "English", population: "34 million",
+      fun_facts: [
+        "One of the world's biggest producers of cocoa beans, used to make chocolate.",
+        "Famous for beautiful, brightly colored hand-woven Kente cloth.",
+        "Lake Volta is one of the largest man-made lakes on Earth.",
+        "First country south of the Sahara to gain independence, in 1957.",
+        "Has historic coastal castles and palm-tree-lined beaches."
+      ]
+    },
+    {
+      name: "Haiti", fifa: "HAI", iso: "ht", lat: 18.9712, lng: -72.2852,
+      language: "French, Haitian Creole", population: "11.7 million",
+      fun_facts: [
+        "The first country in the world founded by formerly enslaved people who won their freedom.",
+        "Shares the island of Hispaniola with the Dominican Republic.",
+        "The Citadelle Laferrière is one of the biggest forts in all of the Americas.",
+        "Famous for vibrant, colorful folk art and metal-cut sculptures.",
+        "The first independent country in the Caribbean."
+      ]
+    },
+    {
+      name: "Iran", fifa: "IRN", iso: "ir", lat: 32.4279, lng: 53.688,
+      language: "Persian (Farsi)", population: "89 million",
+      fun_facts: [
+        "One of the world's oldest civilizations — over 4,000 years old.",
+        "Persian rugs are famous around the world for their beautiful patterns.",
+        "Backgammon, one of the oldest board games, was invented here.",
+        "Has 27 places named as UNESCO World Heritage sites.",
+        "Persian New Year (Nowruz) celebrates the very first day of spring."
+      ]
+    },
+    {
+      name: "Iraq", fifa: "IRQ", iso: "iq", lat: 33.2232, lng: 43.6793,
+      language: "Arabic, Kurdish", population: "45 million",
+      fun_facts: [
+        "Known as the 'cradle of civilization' — where the first writing was invented.",
+        "Ancient Babylon, with its famous Hanging Gardens, was located here.",
+        "The Tigris and Euphrates rivers flow through the country.",
+        "The number zero in math has ancient roots here.",
+        "Iraq grows over 600 different varieties of date palms."
+      ]
+    },
+    {
+      name: "Ivory Coast", fifa: "CIV", iso: "ci", lat: 7.54, lng: -5.5471,
+      language: "French", population: "29 million",
+      fun_facts: [
+        "The world's largest producer of cocoa beans used to make chocolate.",
+        "The town of Yamoussoukro has the largest church in the world by area.",
+        "Home to more than 60 different ethnic groups, each with its own traditions.",
+        "Has both lush rainforests and dry savanna grasslands.",
+        "Beautiful tropical beaches stretch along the Atlantic coast."
+      ]
+    },
+    {
+      name: "Japan", fifa: "JPN", iso: "jp", lat: 36.2048, lng: 138.2529,
+      language: "Japanese", population: "125 million",
+      fun_facts: [
+        "Made up of over 14,000 islands.",
+        "The Shinkansen bullet train can zoom up to 200 miles per hour.",
+        "Cherry blossom (sakura) season is a huge national celebration each spring.",
+        "Has over 200 volcanoes, including the famous Mount Fuji.",
+        "Sushi, anime, video games, and karaoke all come from here."
+      ]
+    },
+    {
+      name: "Jordan", fifa: "JOR", iso: "jo", lat: 30.5852, lng: 36.2384,
+      language: "Arabic", population: "11.3 million",
+      fun_facts: [
+        "Petra is an ancient city carved right into pink sandstone cliffs.",
+        "The Dead Sea is so salty that you float on top of the water.",
+        "The desert of Wadi Rum has been used to film scenes set on Mars.",
+        "Has Roman ruins at Jerash that are over 2,000 years old.",
+        "Coffee with cardamom is the traditional drink of welcome."
+      ]
+    },
+    {
+      name: "Mexico", fifa: "MEX", iso: "mx", lat: 23.6345, lng: -102.5528,
+      language: "Spanish", population: "129 million",
+      fun_facts: [
+        "Home to amazing ancient Mayan and Aztec pyramids.",
+        "Chocolate, popcorn, and chili peppers were all first grown here.",
+        "The Day of the Dead is a colorful celebration honoring family members who have passed.",
+        "Mexico recognizes 68 official indigenous languages alongside Spanish.",
+        "Mexico City is built on top of what was once a huge Aztec lake."
+      ]
+    },
+    {
+      name: "Morocco", fifa: "MAR", iso: "ma", lat: 31.7917, lng: -7.0926,
+      language: "Arabic, Berber (Tamazight)", population: "37 million",
+      fun_facts: [
+        "You can ride a camel across the dunes of the Sahara Desert.",
+        "Chefchaouen is a town where almost every building is painted bright blue.",
+        "Marrakech has one of the world's busiest open-air markets, the souk.",
+        "The Atlas Mountains have snow on their peaks even in summer.",
+        "Sweet mint tea is the national drink, poured from high up to make bubbles."
+      ]
+    },
+    {
+      name: "Netherlands", fifa: "NED", iso: "nl", lat: 52.1326, lng: 5.2913,
+      language: "Dutch", population: "17.8 million",
+      fun_facts: [
+        "About one-third of the country sits below sea level.",
+        "Famous for tulips, windmills, and wooden clog shoes.",
+        "There are more bicycles than people in the country.",
+        "Amsterdam has more canals than Venice, Italy.",
+        "Children in the Netherlands are regularly ranked as the happiest in the world."
+      ]
+    },
+    {
+      name: "New Zealand", fifa: "NZL", iso: "nz", lat: -40.9006, lng: 174.886,
+      language: "English, Māori, NZ Sign Language", population: "5.2 million",
+      fun_facts: [
+        "The 'Lord of the Rings' and 'Hobbit' movies were filmed here.",
+        "There are about 6 sheep for every person who lives in the country.",
+        "First country in the world to give women the right to vote, in 1893.",
+        "The kiwi is a flightless bird and the national symbol.",
+        "There are no native land mammals — only bats!"
+      ]
+    },
+    {
+      name: "Norway", fifa: "NOR", iso: "no", lat: 60.472, lng: 8.4689,
+      language: "Norwegian", population: "5.5 million",
+      fun_facts: [
+        "In the far north, the sun doesn't set for weeks in summer — it's called the 'Midnight Sun.'",
+        "Viking sailors set off from here over 1,000 years ago.",
+        "You can see the Northern Lights (Aurora Borealis) light up the sky in winter.",
+        "Has thousands of dramatic fjords — deep ocean inlets carved by ancient glaciers.",
+        "Salmon sushi was actually invented when Norwegians introduced it to Japan in the 1980s."
+      ]
+    },
+    {
+      name: "Panama", fifa: "PAN", iso: "pa", lat: 8.538, lng: -80.7821,
+      language: "Spanish", population: "4.5 million",
+      fun_facts: [
+        "The Panama Canal connects the Atlantic and Pacific Oceans, saving ships a huge trip around South America.",
+        "Because of how the country curves, you can watch the sun rise over the Pacific AND set over the Atlantic.",
+        "Home to over 940 different species of birds.",
+        "Famous 'Panama' hats are actually from Ecuador.",
+        "The country is shaped like a letter 'S' on its side."
+      ]
+    },
+    {
+      name: "Paraguay", fifa: "PAR", iso: "py", lat: -23.4425, lng: -58.4438,
+      language: "Spanish, Guaraní", population: "6.9 million",
+      fun_facts: [
+        "One of only two landlocked countries in South America.",
+        "The Itaipu Dam is one of the largest hydroelectric power plants on Earth.",
+        "Almost everyone speaks Guaraní, an indigenous language, alongside Spanish.",
+        "The flag is the only one in the world with a different design on the front and back.",
+        "Yerba mate, a strong herbal tea, is sipped from a special cup with a metal straw."
+      ]
+    },
+    {
+      name: "Portugal", fifa: "POR", iso: "pt", lat: 39.3999, lng: -8.2245,
+      language: "Portuguese", population: "10.3 million",
+      fun_facts: [
+        "One of the oldest countries in Europe — its borders have been the same since 1139.",
+        "Portuguese explorers like Vasco da Gama discovered sea routes around the world.",
+        "The Vasco da Gama Bridge is one of the longest bridges in Europe — about 11 miles long.",
+        "Famous for delicious pastries called pastel de nata (custard tarts).",
+        "Bertrand Bookstore in Lisbon, open since 1732, is the world's oldest bookstore."
+      ]
+    },
+    {
+      name: "Qatar", fifa: "QAT", iso: "qa", lat: 25.3548, lng: 51.1839,
+      language: "Arabic", population: "3 million",
+      fun_facts: [
+        "Hosted the FIFA World Cup in 2022.",
+        "The capital city Doha has dazzling, futuristic skyscrapers.",
+        "One of the wealthiest countries in the world thanks to natural gas.",
+        "Almost the entire country is desert — flat sandy plains.",
+        "Falconry — training falcons to hunt — is a beloved national sport."
+      ]
+    },
+    {
+      name: "Saudi Arabia", fifa: "KSA", iso: "sa", lat: 23.8859, lng: 45.0792,
+      language: "Arabic", population: "36 million",
+      fun_facts: [
+        "Home to Mecca, the holiest city in Islam.",
+        "Has the largest continuous sand desert on Earth — the 'Empty Quarter.'",
+        "The first oil well was drilled in 1938, changing the country forever.",
+        "There isn't a single river in the entire country.",
+        "A brand-new futuristic city called NEOM is being built in the desert."
+      ]
+    },
+    {
+      name: "Scotland", fifa: "SCO", iso: "gb-sct", lat: 56.4907, lng: -4.2026,
+      language: "English, Scots, Scottish Gaelic", population: "5.5 million",
+      fun_facts: [
+        "The legend of the Loch Ness Monster ('Nessie') comes from here.",
+        "Bagpipes are the famous national instrument.",
+        "Scottish inventors gave us the telephone, the television, and penicillin.",
+        "Each clan (family group) has its own special tartan plaid pattern.",
+        "Edinburgh Castle sits on top of an extinct volcano that's 700 million years old."
+      ]
+    },
+    {
+      name: "Senegal", fifa: "SEN", iso: "sn", lat: 14.4974, lng: -14.4524,
+      language: "French", population: "17.7 million",
+      fun_facts: [
+        "The westernmost country in mainland Africa.",
+        "Lake Retba, known as the 'Pink Lake,' is naturally bright pink due to algae.",
+        "Famous for djembe drumming and powerful music traditions.",
+        "Giant baobab trees can live for more than 1,000 years.",
+        "Senegal has produced star footballers like Sadio Mané."
+      ]
+    },
+    {
+      name: "South Africa", fifa: "RSA", iso: "za", lat: -30.5595, lng: 22.9375,
+      language: "12 official languages (Zulu, Xhosa, English, Afrikaans, and more)",
+      population: "62 million",
+      fun_facts: [
+        "Has 12 official languages — more than almost any other country.",
+        "On safari you can spot the 'Big Five': lion, leopard, elephant, rhino, and buffalo.",
+        "Table Mountain in Cape Town is one of the New 7 Wonders of Nature.",
+        "First country to perform a successful human heart transplant, in 1967.",
+        "Has three different capital cities — Pretoria, Cape Town, and Bloemfontein."
+      ]
+    },
+    {
+      name: "South Korea", fifa: "KOR", iso: "kr", lat: 35.9078, lng: 127.7669,
+      language: "Korean", population: "52 million",
+      fun_facts: [
+        "Has some of the fastest internet speeds in the world.",
+        "K-pop bands like BTS are loved by fans worldwide.",
+        "Kimchi (spicy fermented cabbage) is the famous national side dish.",
+        "Seoul is one of the safest big cities in the world.",
+        "Korea invented one of the world's first metal-type printing presses — even before Gutenberg!"
+      ]
+    },
+    {
+      name: "Spain", fifa: "ESP", iso: "es", lat: 40.4637, lng: -3.7492,
+      language: "Spanish (Castilian), Catalan, Galician, Basque", population: "48 million",
+      fun_facts: [
+        "Home to the wild La Tomatina festival — a giant tomato fight every August.",
+        "Spanish is spoken by more than 500 million people across the world.",
+        "Sobrino de Botín in Madrid, open since 1725, is the oldest restaurant in the world.",
+        "Flamenco dancing, with its dramatic guitars and stomping, is a Spanish tradition.",
+        "The Sagrada Família church in Barcelona has been under construction since 1882 — still not done!"
+      ]
+    },
+    {
+      name: "Sweden", fifa: "SWE", iso: "se", lat: 60.1282, lng: 18.6435,
+      language: "Swedish", population: "10.6 million",
+      fun_facts: [
+        "Home to IKEA, ABBA, and the makers of Minecraft.",
+        "Has nearly 100,000 lakes scattered across the country.",
+        "First country in the world to create a Ministry of the Environment, in 1969.",
+        "In Lapland, the sun doesn't set for weeks during summer.",
+        "Swedish meatballs and cinnamon buns are world famous."
+      ]
+    },
+    {
+      name: "Switzerland", fifa: "SUI", iso: "ch", lat: 46.8182, lng: 8.2275,
+      language: "German, French, Italian, Romansh", population: "8.9 million",
+      fun_facts: [
+        "Famous for delicious chocolate and holey Swiss cheese.",
+        "Hasn't been in a war since 1815 — it stays officially neutral.",
+        "The Swiss Alps are some of the most beautiful mountains in Europe.",
+        "Cuckoo clocks come from this region.",
+        "Has four official languages: German, French, Italian, and Romansh."
+      ]
+    },
+    {
+      name: "Tunisia", fifa: "TUN", iso: "tn", lat: 33.8869, lng: 9.5375,
+      language: "Arabic", population: "12.5 million",
+      fun_facts: [
+        "Scenes from the original 'Star Wars' movies were filmed in its desert.",
+        "Has both Sahara Desert sand dunes and Mediterranean Sea beaches.",
+        "Ancient Carthage, a powerful empire that fought Rome, was located here.",
+        "The smallest country in North Africa.",
+        "Couscous is the beloved national dish."
+      ]
+    },
+    {
+      name: "Turkey", fifa: "TUR", iso: "tr", lat: 38.9637, lng: 35.2433,
+      language: "Turkish", population: "85 million",
+      fun_facts: [
+        "Located on two continents at once — Europe and Asia.",
+        "Istanbul has been the capital city of three different empires.",
+        "Tulips actually came originally from Turkey, not the Netherlands.",
+        "Colorful hot air balloons float over the rocky Cappadocia region every morning.",
+        "Saint Nicholas — the inspiration for Santa Claus — was born in what is now Turkey."
+      ]
+    },
+    {
+      name: "Uruguay", fifa: "URU", iso: "uy", lat: -32.5228, lng: -55.7658,
+      language: "Spanish", population: "3.4 million",
+      fun_facts: [
+        "Hosted AND won the very first FIFA World Cup, in 1930.",
+        "Has about 4 cows for every person — beef is a way of life.",
+        "Often gets 100% of its electricity from clean, renewable sources.",
+        "'Asado' (grilled meat over open fire) is the national meal.",
+        "Punta del Este has a giant sculpture of a hand rising out of the beach sand."
+      ]
+    },
+    {
+      name: "USA", fifa: "USA", iso: "us", lat: 37.0902, lng: -95.7129,
+      language: "English (no official federal language; many states have official languages)",
+      population: "336 million",
+      fun_facts: [
+        "Made up of 50 states with deserts, mountains, beaches, and forests.",
+        "Home to the Grand Canyon and the geysers of Yellowstone National Park.",
+        "Co-hosting the 2026 World Cup with Canada and Mexico.",
+        "Invented basketball, baseball, and American football.",
+        "The Statue of Liberty was a gift from France in 1886."
+      ]
+    },
+    {
+      name: "Uzbekistan", fifa: "UZB", iso: "uz", lat: 41.3775, lng: 64.5853,
+      language: "Uzbek", population: "36 million",
+      fun_facts: [
+        "One of only two 'doubly landlocked' countries — you have to cross two countries to reach an ocean.",
+        "Was a key stop on the ancient Silk Road trading route.",
+        "Samarkand is full of dazzling blue-tiled mosques over 600 years old.",
+        "'Plov' (rice cooked with meat, carrots, and onions) is the national dish.",
+        "The Aral Sea was once the world's fourth-largest lake."
+      ]
+    }
   ];
 
-  // Initialize map — centered on the Atlantic for a balanced world view
+  // ============================================================
+  // Map setup
+  // ============================================================
   const map = L.map("map", {
     center: [25, -10],
     zoom: 2,
@@ -244,7 +944,6 @@
     zoomControl: true
   });
 
-  // Dark tile layer (CartoDB Dark Matter — free for OSS use, attribution shown)
   L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
     {
@@ -255,33 +954,76 @@
     }
   ).addTo(map);
 
+  // ============================================================
+  // Modal logic
+  // ============================================================
+  const backdrop      = document.getElementById("modalBackdrop");
+  const modalFlag     = document.getElementById("modalFlag");
+  const modalTitle    = document.getElementById("modalTitle");
+  const modalCode     = document.getElementById("modalCode");
+  const modalLanguage = document.getElementById("modalLanguage");
+  const modalPop      = document.getElementById("modalPopulation");
+  const modalFacts    = document.getElementById("modalFacts");
+
+  function openModal(team) {
+    // High-resolution flag (1280px wide) for the detail view
+    modalFlag.src = `https://flagcdn.com/w1280/${team.iso}.png`;
+    modalFlag.alt = `Flag of ${team.name}`;
+    modalTitle.textContent    = team.name;
+    modalCode.textContent     = team.fifa;
+    modalLanguage.textContent = team.language;
+    modalPop.textContent      = team.population;
+    modalFacts.innerHTML = team.fun_facts
+      .map((f) => `<li>${f}</li>`)
+      .join("");
+    backdrop.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    backdrop.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  document.getElementById("modalClose").addEventListener("click", closeModal);
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) closeModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  // ============================================================
   // Build a flag marker for each team
-  teams.forEach(([name, fifa, iso, lat, lng]) => {
+  // ============================================================
+  teams.forEach((team) => {
     const html = `
       <div class="flag-marker">
-        <img src="https://flagcdn.com/w40/${iso}.png"
-             srcset="https://flagcdn.com/w80/${iso}.png 2x"
-             alt="${name} flag"
-             onerror="this.style.background='#222';this.alt='${fifa}'" />
-        <div class="code">${fifa}</div>
+        <img src="https://flagcdn.com/w40/${team.iso}.png"
+             srcset="https://flagcdn.com/w80/${team.iso}.png 2x"
+             alt="${team.name} flag"
+             onerror="this.style.background='#222';this.alt='${team.fifa}'" />
+        <div class="code">${team.fifa}</div>
       </div>
     `;
 
     const icon = L.divIcon({
       html,
-      className: "",                // strip Leaflet's default class
+      className: "",
       iconSize: [40, 40],
       iconAnchor: [20, 40]
     });
 
-    const marker = L.marker([lat, lng], { icon, title: name }).addTo(map);
+    const marker = L.marker([team.lat, team.lng], { icon, title: team.name }).addTo(map);
 
-    marker.bindTooltip(name, {
+    marker.bindTooltip(team.name, {
       direction: "top",
       offset: [0, -38],
       className: "country-tip",
       opacity: 1
     });
+
+    marker.on("click", () => openModal(team));
   });
 </script>
 </body>
